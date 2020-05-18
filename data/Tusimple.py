@@ -21,7 +21,7 @@ class Tusimple(Dataset):
     def __init__(self, path, image_set, transforms=None):
         super(Tusimple, self).__init__()
         assert image_set in ('train', 'val', 'test'), "image_set is not valid!"
-        self.data_dir_path = '/content/drive/My Drive/cs231n/Project/dataset/trainset/clips'
+        self.data_dir_path = '/content/drive/My Drive/cs231n/Project/dataset/trainset'
         self.image_set = image_set
         self.transforms = transforms
 
@@ -29,7 +29,7 @@ class Tusimple(Dataset):
             print("Label is going to get generated into dir: {} ...".format(os.path.join(path, "seg_label")))
             self.generate_label()
             
-        #self.createIndex()
+        self.createIndex()
 
     def createIndex(self):
         self.img_list = []

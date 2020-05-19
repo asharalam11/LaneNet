@@ -14,9 +14,9 @@ class Tusimple(Dataset):
     val includes label_data_0531.json
     test includes test_label.json
     """
-    TRAIN_SET = ['label_0313.json']
-    VAL_SET = ['label_0531.json']
-    TEST_SET = ['label_0601.json']
+    TRAIN_SET = ['label_0313_train.json']
+    VAL_SET = ['label_0531_val.json']
+    TEST_SET = ['label_0601_test.json']
 
     def __init__(self, path, image_set, transforms=None):
         super(Tusimple, self).__init__()

@@ -88,6 +88,7 @@ class SCNN(nn.Module):
         self.backbone = models.vgg16_bn(pretrained=self.pretrained).features
 
         # ----------------- process backbone -----------------
+        
         for i in [34, 37, 40]:
             conv = self.backbone._modules[str(i)]
             dilated_conv = nn.Conv2d(
@@ -98,7 +99,7 @@ class SCNN(nn.Module):
             self.backbone._modules[str(i)] = dilated_conv
         self.backbone._modules.pop('33')
         self.backbone._modules.pop('43')
-
+        
         # ----------------- SCNN part -----------------
         self.layer1 = nn.Sequential(
             nn.Conv2d(512, 1024, 3, padding=4, dilation=4, bias=False),
@@ -121,6 +122,7 @@ class SCNN(nn.Module):
 
         # ----------------- SCNN part -----------------
         self.layer2 = nn.Sequential(
+            #nn.Dropout2d(0.1),
             nn.Dropout2d(0.1),
             nn.Conv2d(128, 5, 1)  # get (nB, 5, 36, 100)
         )

@@ -17,6 +17,7 @@ class Tusimple(Dataset):
     TRAIN_SET = ['label_0313_train.json']
     VAL_SET = ['label_0531_val.json']
     TEST_SET = ['label_0601_test.json']
+    print("bye")
 
     def __init__(self, path, image_set, transforms=None):
         super(Tusimple, self).__init__()

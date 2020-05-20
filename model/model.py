@@ -17,6 +17,7 @@ class SCNN(nn.Module):
             ms_ks: kernel size in message passing conv
         """
         super(SCNN, self).__init__()
+        print("no")
         self.pretrained = pretrained
         self.net_init(input_size, ms_ks)
         if not pretrained:

@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
+from torchsummary import summary
 
 
 class SCNN(nn.Module):
@@ -88,6 +89,8 @@ class SCNN(nn.Module):
         self.backbone = models.vgg16_bn(pretrained=self.pretrained).features
 
         # ----------------- process backbone -----------------
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
+        #summary(self.backbone().to(device), (3, 224, 224))
         
         for i in [34, 37, 40]:
             conv = self.backbone._modules[str(i)]
@@ -123,7 +126,7 @@ class SCNN(nn.Module):
         # ----------------- SCNN part -----------------
         self.layer2 = nn.Sequential(
             #nn.Dropout2d(0.1),
-            nn.Dropout2d(0.1),
+            nn.Dropout2d(0.5),
             nn.Conv2d(128, 5, 1)  # get (nB, 5, 36, 100)
         )
 

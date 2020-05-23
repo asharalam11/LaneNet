@@ -49,7 +49,7 @@ def prob2lines_tusimple(seg_pred, exist, resize_shape=None, smooth=True, y_px_ga
     coordinates: [x, y] list of lanes, e.g.: [ [[9, 569], [50, 549]] ,[[630, 569], [647, 549]] ]
     """
     if resize_shape is None:
-        resize_shape = seg_pred.shape[1:]  # seg_pred (5, h, w)
+      resize_shape = seg_pred.shape[1:]  # seg_pred (5, h, w)
     _, h, w = seg_pred.shape
     H, W = resize_shape
     coordinates = []

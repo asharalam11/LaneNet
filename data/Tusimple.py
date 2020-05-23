@@ -17,15 +17,16 @@ class Tusimple(Dataset):
     TRAIN_SET = ['label_0313_train.json']
     VAL_SET = ['label_0531_val.json']
     TEST_SET = ['label_0601_test.json']
-    print("bye")
+    print("hi")
 
     def __init__(self, path, image_set, transforms=None):
         super(Tusimple, self).__init__()
         assert image_set in ('train', 'val', 'test'), "image_set is not valid!"
-        self.data_dir_path = '/content/drive/My Drive/cs231n/Project/dataset/trainset'
+        self.data_dir_path = "/content/drive/My Drive/cs231n/Project/dataset/trainset"
         self.image_set = image_set
         self.transforms = transforms
 
+        print(os.path.exists(os.path.join(path, "seg_label")))
         if not os.path.exists(os.path.join(path, "seg_label")):
             print("Label is going to get generated into dir: {} ...".format(os.path.join(path, "seg_label")))
             self.generate_label()

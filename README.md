@@ -1,3 +1,4 @@
-LaneNet in Colab because GCP GPUs are unaivalable
-Testing first commit from colab
-Testing first github commit
+LaneNet in Colab because GCP GPUs are unavailable
+Switching to GCP VM
+Testing first commit from GCP VM
+Testing the new branch gcp_vm

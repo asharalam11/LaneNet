@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
-#from torchsummary import summary
 
 
 class SCNN(nn.Module):
@@ -88,6 +87,7 @@ class SCNN(nn.Module):
         input_w, input_h = input_size
         self.fc_input_feature = 5 * int(input_w/16) * int(input_h/16)
         self.backbone = models.vgg16_bn(pretrained=self.pretrained).features
+        print(self.backbone)
 
         # ----------------- process backbone -----------------
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0

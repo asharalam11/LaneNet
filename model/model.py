@@ -88,7 +88,7 @@ class SCNN(nn.Module):
         self.fc_input_feature = 5 * int(input_w/16) * int(input_h/16)
         
         ################################## SELECTING BACKBONE ARCHITECTURE ########################################
-        self.backbone = select_backbone('resnet') # ResNet18 for now
+        self.backbone = self.select_backbone('resnet') # ResNet18 for now
         ###############################################################################################
         
         
@@ -139,7 +139,8 @@ class SCNN(nn.Module):
                 m.bias.data.zero_()
                 
     # Selecting model backbone from various vision models trained on ImageNet          
-    def select_backbone(model):
+    def select_backbone(self, model):
+        print("wtf")
         if (model == 'resnet'):
             model = models.resnet18(pretrained=True)
             ## Extracting the model layers as elementst of a list
@@ -155,7 +156,7 @@ class SCNN(nn.Module):
             model = torch.nn.Sequential(*mod, convolutional, relu)
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
             model = model.to(device)
-        else if (model == 'googlenet'):
+        elif (model == 'googlenet'):
             model = models.googlenet(pretrained=True)
             ## Extracting the model layers as elementst of a list
             mod = list(model.children())
@@ -168,7 +169,7 @@ class SCNN(nn.Module):
             model = torch.nn.Sequential(*mod, conv, bn, relu)
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
             model = model.to(device)
-        else if (model == 'shufflenet'):
+        elif (model == 'shufflenet'):
             ## Extracting the model layers as elementst of a list
             mod = list(model.children())
             # Removing all layers after layer 33
@@ -180,7 +181,7 @@ class SCNN(nn.Module):
             model = torch.nn.Sequential(*mod, conv, relu)
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
             model = model.to(device)
-        else if (model == 'mobilenet'):
+        elif (model == 'mobilenet'):
             model = models.mobilenet_v2(pretrained=True).features
             ## Extracting the model layers as elementst of a list
             mod = list(model.children())
@@ -192,7 +193,7 @@ class SCNN(nn.Module):
             model = torch.nn.Sequential(*mod, convolutional, relu)
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
             model = model.to(device)
-        else if (model == 'resnext'):
+        elif (model == 'resnext'):
             model = models.resnext50_32x4d(pretrained=True)
             ## Extracting the model layers as elementst of a list
             mod = list(model.children())
@@ -206,7 +207,7 @@ class SCNN(nn.Module):
             #model = torch.nn.Sequential(*mod)
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
             model = model.to(device)
-        else if (model == 'wideresnet'):
+        elif (model == 'wideresnet'):
             model = models.wide_resnet50_2(pretrained=True)
             mod = list(model.children())
             # Removing all layers after layer 33
@@ -218,7 +219,7 @@ class SCNN(nn.Module):
             model = torch.nn.Sequential(*mod, conv, bn, relu)
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
             model = model.to(device)
-        else if (model == 'mnasnet'):
+        elif (model == 'mnasnet'):
             model = models.mnasnet1_0(pretrained=True).layers
             mod = list(model.children())
             # Removing all layers after layer 33
@@ -233,7 +234,7 @@ class SCNN(nn.Module):
             model = torch.nn.Sequential(*mod, conv, bn, relu, conv1, bn1, relu1)
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
             model = model.to(device)
-        else if (model == 'vgg16_bn'):
+        elif (model == 'vgg16_bn'):
             model = models.vgg16_bn(pretrained=self.pretrained).features
             # ----------------- process backbone -----------------
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0

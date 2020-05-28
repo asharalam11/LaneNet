@@ -86,9 +86,10 @@ class SCNN(nn.Module):
     def net_init(self, input_size, ms_ks):
         input_w, input_h = input_size
         self.fc_input_feature = 5 * int(input_w/16) * int(input_h/16)
+        
+        """
         self.backbone = models.vgg16_bn(pretrained=self.pretrained).features
-        print(self.backbone)
-
+        
         # ----------------- process backbone -----------------
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
         #summary(self.backbone().to(device), (3, 224, 224))
@@ -103,6 +104,25 @@ class SCNN(nn.Module):
             self.backbone._modules[str(i)] = dilated_conv
         self.backbone._modules.pop('33')
         self.backbone._modules.pop('43')
+        """
+        
+        ################################## RESNET 18 BACKBONE########################################
+        model = models.resnet18(pretrained=True)
+        ## Extracting the model layers as elementst of a list
+        mod = list(model.children())
+        # Removing all layers after layer 33
+        #for i in range(33):
+        mod.pop()
+        mod.pop()
+        mod.pop()
+        mod.pop()
+        convolutional = nn.Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), padding=(0, 0), bias=False)
+        relu = nn.ReLU(inplace = True)
+        model = torch.nn.Sequential(*mod, convolutional, relu)
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
+        self.backbone = model.to(device)
+        ###############################################################################################
+        
         
         # ----------------- SCNN part -----------------
         self.layer1 = nn.Sequential(

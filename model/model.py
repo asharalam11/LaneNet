@@ -87,40 +87,8 @@ class SCNN(nn.Module):
         input_w, input_h = input_size
         self.fc_input_feature = 5 * int(input_w/16) * int(input_h/16)
         
-        """
-        self.backbone = models.vgg16_bn(pretrained=self.pretrained).features
-        
-        # ----------------- process backbone -----------------
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
-        #summary(self.backbone().to(device), (3, 224, 224))
-        
-        for i in [34, 37, 40]:
-            conv = self.backbone._modules[str(i)]
-            dilated_conv = nn.Conv2d(
-                conv.in_channels, conv.out_channels, conv.kernel_size, stride=conv.stride,
-                padding=tuple(p * 2 for p in conv.padding), dilation=2, bias=(conv.bias is not None)
-            )
-            dilated_conv.load_state_dict(conv.state_dict())
-            self.backbone._modules[str(i)] = dilated_conv
-        self.backbone._modules.pop('33')
-        self.backbone._modules.pop('43')
-        """
-        
-        ################################## RESNET 18 BACKBONE########################################
-        model = models.resnet18(pretrained=True)
-        ## Extracting the model layers as elementst of a list
-        mod = list(model.children())
-        # Removing all layers after layer 33
-        #for i in range(33):
-        mod.pop()
-        mod.pop()
-        mod.pop()
-        mod.pop()
-        convolutional = nn.Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), padding=(0, 0), bias=False)
-        relu = nn.ReLU(inplace = True)
-        model = torch.nn.Sequential(*mod, convolutional, relu)
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
-        self.backbone = model.to(device)
+        ################################## SELECTING BACKBONE ARCHITECTURE ########################################
+        self.backbone = select_backbone('resnet') # ResNet18 for now
         ###############################################################################################
         
         
@@ -169,3 +137,121 @@ class SCNN(nn.Module):
             elif isinstance(m, nn.BatchNorm2d):
                 m.weight.data[:] = 1.
                 m.bias.data.zero_()
+                
+    # Selecting model backbone from various vision models trained on ImageNet          
+    def select_backbone(model):
+        if (model == 'resnet'):
+            model = models.resnet18(pretrained=True)
+            ## Extracting the model layers as elementst of a list
+            mod = list(model.children())
+            # Removing all layers after layer 33
+            #for i in range(33):
+            mod.pop()
+            mod.pop()
+            mod.pop()
+            mod.pop()
+            convolutional = nn.Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), padding=(0, 0), bias=False)
+            relu = nn.ReLU(inplace = True)
+            model = torch.nn.Sequential(*mod, convolutional, relu)
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
+            model = model.to(device)
+        else if (model == 'googlenet'):
+            model = models.googlenet(pretrained=True)
+            ## Extracting the model layers as elementst of a list
+            mod = list(model.children())
+            # Removing all layers after layer 33
+            for i in range(12):
+              mod.pop()
+            conv = nn.Conv2d(480, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            bn = nn.BatchNorm2d(512, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+            relu = nn.ReLU(inplace=True)
+            model = torch.nn.Sequential(*mod, conv, bn, relu)
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
+            model = model.to(device)
+        else if (model == 'shufflenet'):
+            ## Extracting the model layers as elementst of a list
+            mod = list(model.children())
+            # Removing all layers after layer 33
+            for i in range(4):
+              mod.pop()
+            conv = nn.Conv2d(116, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            bn = nn.BatchNorm2d(116, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            relu = nn.ReLU(inplace=True)
+            model = torch.nn.Sequential(*mod, conv, relu)
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
+            model = model.to(device)
+        else if (model == 'mobilenet'):
+            model = models.mobilenet_v2(pretrained=True).features
+            ## Extracting the model layers as elementst of a list
+            mod = list(model.children())
+            # Removing all layers after layer 33
+            for i in range(12):
+              mod.pop()
+            convolutional = nn.Conv2d(32, 512, kernel_size=(1, 1), stride=(1, 1), padding=(0, 0), bias=False)
+            relu = nn.ReLU6(inplace = True)
+            model = torch.nn.Sequential(*mod, convolutional, relu)
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
+            model = model.to(device)
+        else if (model == 'resnext'):
+            model = models.resnext50_32x4d(pretrained=True)
+            ## Extracting the model layers as elementst of a list
+            mod = list(model.children())
+            # Removing all layers after layer 33
+            for i in range(4):
+              mod.pop()
+            conv = nn.Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            bn =  nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            relu = nn.ReLU(inplace = True)
+            model = torch.nn.Sequential(*mod, conv, bn, Relu)
+            #model = torch.nn.Sequential(*mod)
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
+            model = model.to(device)
+        else if (model == 'wideresnet'):
+            model = models.wide_resnet50_2(pretrained=True)
+            mod = list(model.children())
+            # Removing all layers after layer 33
+            for i in range(4):
+              mod.pop()
+            conv = nn.Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            bn =  nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            relu = nn.ReLU(inplace = True)
+            model = torch.nn.Sequential(*mod, conv, bn, relu)
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
+            model = model.to(device)
+        else if (model == 'mnasnet'):
+            model = models.mnasnet1_0(pretrained=True).layers
+            mod = list(model.children())
+            # Removing all layers after layer 33
+            for i in range(7):
+              mod.pop()
+            conv = nn.Conv2d(40, 240, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            bn = nn.BatchNorm2d(240, eps=1e-05, momentum=0.00029999999999996696, affine=True, track_running_stats=True)
+            relu = nn.ReLU(inplace=True)
+            conv1 = nn.Conv2d(240, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            bn1 = nn.BatchNorm2d(512, eps=1e-05, momentum=0.00029999999999996696, affine=True, track_running_stats=True)
+            relu1 = nn.ReLU(inplace=True)
+            model = torch.nn.Sequential(*mod, conv, bn, relu, conv1, bn1, relu1)
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
+            model = model.to(device)
+        else if (model == 'vgg16_bn'):
+            model = models.vgg16_bn(pretrained=self.pretrained).features
+            # ----------------- process backbone -----------------
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
+            
+            for i in [34, 37, 40]:
+                conv = self.backbone._modules[str(i)]
+                dilated_conv = nn.Conv2d(
+                    conv.in_channels, conv.out_channels, conv.kernel_size, stride=conv.stride,
+                    padding=tuple(p * 2 for p in conv.padding), dilation=2, bias=(conv.bias is not None)
+                )
+                dilated_conv.load_state_dict(conv.state_dict())
+                model._modules[str(i)] = dilated_conv
+            model._modules.pop('33')
+            model._modules.pop('43')
+            model = model.to(device)
+        # Outside the if - else if
+        return model
+
+            
+            
+

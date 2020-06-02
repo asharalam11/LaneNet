@@ -4,12 +4,12 @@
 
   "dataset": {
     "dataset_name": "Tusimple",
-    "batch_size": 20,
+    "batch_size": 16,
     "resize_shape": [512, 288]
   },
 
   "optim": {
-    "lr": 15e-2,
+    "lr": 10e-2,
     "momentum": 0.9,
     "weight_decay": 1e-4,
     "nesterov": true

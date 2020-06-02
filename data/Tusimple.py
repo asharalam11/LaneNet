@@ -14,8 +14,8 @@ class Tusimple(Dataset):
     val includes label_data_0531.json
     test includes test_label.json
     """
-    TRAIN_SET = ['label_0313_train.json']
-    VAL_SET = ['label_0531_val.json']
+    TRAIN_SET = ['label_train_16.json']
+    VAL_SET = ['label_val_16.json']
     TEST_SET = ['label_0601_test.json']
     print("hi")
 

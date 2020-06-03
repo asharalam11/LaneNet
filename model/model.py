@@ -16,7 +16,6 @@ class SCNN(nn.Module):
             ms_ks: kernel size in message passing conv
         """
         super(SCNN, self).__init__()
-        print("new")
         self.pretrained = pretrained
         self.net_init(input_size, ms_ks)
         if not pretrained:
@@ -131,12 +130,17 @@ class SCNN(nn.Module):
         )
 
     def weight_init(self):
+        print("Initializing weights")
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 m.reset_parameters()
+                #nn.init.kaiming_normal_(m.weight)
             elif isinstance(m, nn.BatchNorm2d):
-                m.weight.data[:] = 1.
-                m.bias.data.zero_()
+                m.reset_parameters()
+                #m.weight.data[:] = 1.
+                #m.bias.data.zero_()
+                #nn.init.normal_(m.weight)
+                #nn.init.zeros_(m.bias)
                 
     # Selecting model backbone from various vision models trained on ImageNet          
     def select_backbone(self, model):
@@ -240,7 +244,7 @@ class SCNN(nn.Module):
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
             
             for i in [34, 37, 40]:
-                conv = self.backbone._modules[str(i)]
+                conv = model._modules[str(i)]
                 dilated_conv = nn.Conv2d(
                     conv.in_channels, conv.out_channels, conv.kernel_size, stride=conv.stride,
                     padding=tuple(p * 2 for p in conv.padding), dilation=2, bias=(conv.bias is not None)

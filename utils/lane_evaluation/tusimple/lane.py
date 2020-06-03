@@ -21,9 +21,13 @@ class LaneEval(object):
 
     @staticmethod
     def line_accuracy(pred, gt, thresh):
-        pred = np.array([p if p >= 0 else -100 for p in pred])
+        # Modified from -100 to -10000 to get rid of the weird bug
+        pred = np.array([p if p >= 0 else -10000 for p in pred])
         gt = np.array([g if g >= 0 else -100 for g in gt])
-        return np.sum(np.where(np.abs(pred - gt) < thresh, 1., 0.)) / len(gt)
+        #print(np.sum(np.where(np.abs(pred - gt) < thresh, 1., 0.)))
+        #return np.sum(np.where(np.abs(pred - gt) < thresh, 1., 0.)) / len(gt)
+        # Below code to disregard h_sample positions, which have no lane markings Assuming there is no -2 throughout
+        return np.sum(np.where(np.abs(pred - gt) < thresh, 1., 0.)) / len(list(filter(lambda x: (x >= 0), gt)))
 
     @staticmethod
     def bench(pred, gt, y_samples, running_time):

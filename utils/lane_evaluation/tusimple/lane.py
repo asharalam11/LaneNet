@@ -27,7 +27,10 @@ class LaneEval(object):
         #print(np.sum(np.where(np.abs(pred - gt) < thresh, 1., 0.)))
         #return np.sum(np.where(np.abs(pred - gt) < thresh, 1., 0.)) / len(gt)
         # Below code to disregard h_sample positions, which have no lane markings Assuming there is no -2 throughout
-        return np.sum(np.where(np.abs(pred - gt) < thresh, 1., 0.)) / len(list(filter(lambda x: (x >= 0), gt)))
+        length = len(list(filter(lambda x: (x >= 0), gt)))
+        if length == 0:
+            length = 1
+        return np.sum(np.where(np.abs(pred - gt) < thresh, 1., 0.)) / length
 
     @staticmethod
     def bench(pred, gt, y_samples, running_time):

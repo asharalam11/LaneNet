@@ -9,7 +9,7 @@
   },
 
   "optim": {
-    "lr": 0.5,
+    "lr": 15e-3,
     "momentum": 0.9,
     "weight_decay": 1e-4,
     "nesterov": true

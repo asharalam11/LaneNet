@@ -9,25 +9,6 @@ Template from: https://github.com/othneildrew/Best-README-Template/blob/master/R
 -->
 
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-# This is the repository for the Colab Version: Please refer to the updated repository for the GCP version by clicking the logo below:
-
-<!-- GCP LOGO -->
-<br />
-<p align="left">
-  <a href="https://github.com/asharalam11/LaneNet/tree/gcp_vm">
-    <img src="images/gcp.jpg" alt="Logo" width="" height="80">
-  </a>
-</p>
-
-### *Colab version coming soon*
-
 # __Stanford CS231N Final Project (Spring 2020)__
 # Lane Detection in Pytorch using Spatial CNN
 
@@ -100,7 +81,7 @@ We used the Tusimple dataset with ~4000 images with training (80%), validation (
 
 #### Custom DataSet Preprocessing
 
-We have provided a :orange_book:```custom_dataset.ipynb``` notebook to perform any custom dataset splits and a :orange_book:```visualize_lane.ipynb``` notebook to visualize the images
+We have provided a :orange_book:[```custom_dataset.ipynb```](data/custom_dataset.ipynb) notebook to perform any custom dataset splits and a :orange_book:[```visualize_lane.ipynb```](data/visualize_lane.ipynb) notebook to visualize the images
 
 ## Model
 
@@ -111,15 +92,15 @@ Our model is based on the SCNN paper by Pan et. al,  ['Spatial as Deep: Spatial 
 </p>
 Specifically, we experimented with various vision models pretrained on ImageNet as the first CNN backbone before attaching it to the SCNN architecture as suggested in the paper. We further reduced the depth of the pretrained vision models and noticed that the performance of the network was similar with a reduction in size and complexity of the model.
 
-We have provided a ```pretrained_model_lab.ipynb``` notebook to experiment with various vision models.
+We have provided a [```pretrained_model_lab.ipynb```](notebooks/pretrained_model_lab.ipynb) notebook to experiment with various vision models.
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
-:arrow_forward:
+## Usage :arrow_forward:
+
 <br/>
 
-We have documented and explained the usage our code step-by-step (including Data Visualization, Training and Testing) in the :orange_book:```LaneNet.ipynb``` notebook
+We have documented and explained the usage our code step-by-step (including Data Visualization, Training and Testing) in the :orange_book:[```LaneNet.ipynb```](notebooks/LaneNet.ipynb) notebook
 _If you are facing any trouble understanding, please create an Issue or create a PR if you encounter a bug_
 
 ## Authors
@@ -132,4 +113,4 @@ See also the list of [contributors](https://github.com/asharalam11/LaneNet/contr
 ## Acknowledgement
 
 * We would like to thank the teaching staff of [CS231N](http://cs231n.stanford.edu/) and all the students taking this course, who were very helpful in clearing out our doubts.
-* This repos is build based on ['Pytorch implementation of SCNN'](https://github.com/harryhan618/SCNN_Pytorch) and [official implementation](<https://github.com/XingangPan/SCNN>).
+* This repos is build based on [Pytorch implementation of SCNN](https://github.com/harryhan618/SCNN_Pytorch) and [official implementation](<https://github.com/XingangPan/SCNN>).

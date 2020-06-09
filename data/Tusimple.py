@@ -17,7 +17,6 @@ class Tusimple(Dataset):
     TRAIN_SET = ['label_train_16.json']
     VAL_SET = ['label_val_16.json']
     TEST_SET = ['label_0601_test.json']
-    print("hi")
 
     def __init__(self, path, image_set, transforms=None):
         super(Tusimple, self).__init__()
@@ -25,8 +24,6 @@ class Tusimple(Dataset):
         self.data_dir_path = "/home/ashar/dataset/trainset"
         self.image_set = image_set
         self.transforms = transforms
-
-        print(os.path.exists(os.path.join(path, "seg_label")))
         if not os.path.exists(os.path.join(path, "seg_label")):
             print("Label is going to get generated into dir: {} ...".format(os.path.join(path, "seg_label")))
             self.generate_label()
@@ -74,7 +71,6 @@ class Tusimple(Dataset):
     def generate_label(self):
         save_dir = os.path.join(self.data_dir_path, "seg_label")
         os.makedirs(save_dir, exist_ok=True)
-        print(save_dir)
 
         # --------- merge json into one file ---------
         with open(os.path.join(save_dir, "train.json"), "w") as outfile:

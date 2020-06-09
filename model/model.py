@@ -87,7 +87,7 @@ class SCNN(nn.Module):
         self.fc_input_feature = 5 * int(input_w/16) * int(input_h/16)
         
         ################################## SELECTING BACKBONE ARCHITECTURE ########################################
-        self.backbone = self.select_backbone('resnet') # ResNet18 for now
+        self.backbone = self.select_backbone('wideresnet') # ResNet18 for now
         ###############################################################################################
         
         
@@ -130,7 +130,6 @@ class SCNN(nn.Module):
         )
 
     def weight_init(self):
-        print("Initializing weights")
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 m.reset_parameters()
@@ -144,7 +143,6 @@ class SCNN(nn.Module):
                 
     # Selecting model backbone from various vision models trained on ImageNet          
     def select_backbone(self, model):
-        print("wtf")
         if (model == 'resnet'):
             model = models.resnet18(pretrained=True)
             ## Extracting the model layers as elementst of a list
@@ -174,6 +172,7 @@ class SCNN(nn.Module):
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
             model = model.to(device)
         elif (model == 'shufflenet'):
+            model = models.shufflenet_v2_x1_0(pretrained=True)
             ## Extracting the model layers as elementst of a list
             mod = list(model.children())
             # Removing all layers after layer 33
@@ -207,11 +206,12 @@ class SCNN(nn.Module):
             conv = nn.Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
             bn =  nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
             relu = nn.ReLU(inplace = True)
-            model = torch.nn.Sequential(*mod, conv, bn, Relu)
+            model = torch.nn.Sequential(*mod, conv, bn, relu)
             #model = torch.nn.Sequential(*mod)
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
             model = model.to(device)
         elif (model == 'wideresnet'):
+            print("wideresnet")
             model = models.wide_resnet50_2(pretrained=True)
             mod = list(model.children())
             # Removing all layers after layer 33
@@ -224,6 +224,7 @@ class SCNN(nn.Module):
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
             model = model.to(device)
         elif (model == 'mnasnet'):
+            print("mnas")
             model = models.mnasnet1_0(pretrained=True).layers
             mod = list(model.children())
             # Removing all layers after layer 33

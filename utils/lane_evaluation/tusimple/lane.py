@@ -6,7 +6,7 @@ import json as json
 class LaneEval(object):
     lr = LinearRegression()
     pixel_thresh = 20
-    pt_thresh = 0.85
+    pt_thresh = 0.80
 
     @staticmethod
     def get_angle(xs, y_samples):

@@ -62,7 +62,7 @@ We used the Tusimple dataset with ~4000 images with training (80%), validation (
 :link:
 
 * We modified the model architectures with different backbones to make the network less deeper and simpler while maintaining similar performance
-* We have provided pretrained models we trained with several backbones, which can be downloaded from [here](https://drive.google.com/open?id=1Wv3r3dCYNBwJdKl_WPEfrEOt-XGaROKu).
+* We have provided pretrained models we trained with several backbones, which can be downloaded from [here](https://drive.google.com/drive/folders/1zvEflXy_1w-HlU_D5dvKAKYB124nwIQu?usp=sharing).
 
 
 * Following is the size of the models we used:
@@ -70,13 +70,12 @@ We used the Tusimple dataset with ~4000 images with training (80%), validation (
 | Backbone | Model Size (Mbs)|
 | -------- | --------------- |
 | Baseline |      157        |
-| ResNet18 |      52        |
-| GoogleNet |     51        |
-| ShuffleNet |      --        |
-| MobileNet |      --        |
-| ResNext |      --        |
-| WideResNet |      --        |
-| MNasNet |      --        |
+| ResNet18 |      51        |
+| GoogleNet |     52        |
+| ShuffleNet |      46        |
+| MobileNet |      45        |
+| ResNext |      58        |
+| WideResNet |      78        |
 
 
 #### Custom DataSet Preprocessing
@@ -100,7 +99,7 @@ We have provided a [```pretrained_model_lab.ipynb```](notebooks/pretrained_model
 
 <br/>
 
-We have documented and explained the usage our code step-by-step (including Data Visualization, Training and Testing) in the :orange_book:[```LaneNet.ipynb```](notebooks/LaneNet.ipynb) notebook
+We have documented and explained the usage our code step-by-step (including Data Visualization, Training and Testing) in the :orange_book:[```LaneNet.ipynb```](notebooks/LaneNet.ipynb) notebook.
 _If you are facing any trouble understanding, please create an Issue or create a PR if you encounter a bug_
 
 ## Authors
